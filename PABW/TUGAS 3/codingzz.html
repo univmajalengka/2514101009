@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toko Kue M Rasya</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  body {
+    /* Ganti URL ini dengan foto toko Anda */
+    background-image: url('https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1600&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: -1;
+  }
+
+  /* ===== NAVBAR ===== */
+  nav {
+    background: rgba(139, 69, 19, 0.95);
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+
+  nav .logo {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  nav .logo span {
+    color: #ffd700;
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+
+  nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+
+  nav ul li a:hover,
+  nav ul li a.active {
+    background: #ffd700;
+    color: #8b4513;
+  }
+
+  /* ===== SECTION ===== */
+  section {
+    display: none;
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  section.active {
+    display: block;
+    animation: fadeIn 0.6s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== BERANDA ===== */
+  .hero {
+    text-align: center;
+    color: #fff;
+    padding: 20px;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+  }
+
+  .hero h1 span { color: #ffd700; }
+
+  .hero p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+  }
+
+  .store-photo {
+    width: 100%;
+    max-width: 800px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+    margin: 20px auto;
+    display: block;
+  }
+
+  .history-box {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 15px;
+    margin-top: 30px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    text-align: left;
+  }
+
+  .history-box h2 {
+    color: #8b4513;
+    margin-bottom: 15px;
+    border-bottom: 3px solid #ffd700;
+    display: inline-block;
+    padding-bottom: 5px;
+  }
+
+  .history-box p {
+    color: #333;
+    line-height: 1.8;
+    margin-bottom: 12px;
+  }
+
+  /* ===== MENU PRODUK ===== */
+  .section-title {
+    text-align: center;
+    color: #fff;
+    font-size: 2.2rem;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
+  }
+
+  .section-title span { color: #ffd700; }
+
+  .produk-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+  }
+
+  .card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .card-body {
+    padding: 18px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-body h3 {
+    color: #8b4513;
+    font-size: 1.25rem;
+    margin-bottom: 8px;
+  }
+
+  .card-body .berat {
+    color: #777;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+
+  .card-body .harga {
+    color: #d32f2f;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-top: auto;
+  }
+
+  .card-body .harga small {
+    color: #777;
+    font-size: 0.8rem;
+    font-weight: normal;
+  }
+
+  .varian {
+    display: flex;
+    gap: 8px;
+    margin: 10px 0;
+    flex-wrap: wrap;
+  }
+
+  .varian span {
+    background: #f5e6d3;
+    color: #8b4513;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  /* ===== SERBA 2K ===== */
+  .serba2k {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .card-2k {
+    background: linear-gradient(135deg, #ffd700, #ffb300);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s;
+  }
+
+  .card-2k:hover { transform: scale(1.05); }
+
+  .card-2k img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 12px;
+  }
+
+  .card-2k h3 {
+    color: #8b4513;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+
+  .card-2k .price-tag {
+    background: #8b4513;
+    color: #ffd700;
+    display: inline-block;
+    padding: 6px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+  }
+
+  /* ===== VIDEO PRODUKSI ===== */
+  .video-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+  }
+
+  .video-card {
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s;
+  }
+
+  .video-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .video-card video {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    background: #000;
+    display: block;
+  }
+
+  .video-card .video-info {
+    padding: 18px;
+  }
+
+  .video-card .video-info h3 {
+    color: #8b4513;
+    font-size: 1.15rem;
+    margin-bottom: 6px;
+  }
+
+  .video-card .video-info p {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  /* Video utama (besar) */
+  .video-utama {
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin-bottom: 30px;
+  }
+
+  .video-utama video {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+    background: #000;
+    display: block;
+  }
+
+  .video-utama .video-info {
+    padding: 20px 25px;
+  }
+
+  .video-utama .video-info h2 {
+    color: #8b4513;
+    margin-bottom: 8px;
+    font-size: 1.5rem;
+  }
+
+  .video-utama .video-info p {
+    color: #555;
+    line-height: 1.6;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: rgba(139, 69, 19, 0.95);
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+  }
+
+  footer span { color: #ffd700; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    nav {
+      flex-direction: column;
+      gap: 12px;
+      padding: 15px;
+    }
+    nav ul {
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .hero h1 { font-size: 2rem; }
+    .section-title { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav>
+  <div class="logo">Toko Kue <span>M Rasya</span></div>
+  <ul>
+    <li><a class="nav-link active" data-target="beranda">Beranda</a></li>
+    <li><a class="nav-link" data-target="produk">Produk</a></li>
+    <li><a class="nav-link" data-target="serba2k">Serba 2K</a></li>
+    <li><a class="nav-link" data-target="video">Video Produksi</a></li>
+  </ul>
+</nav>
+
+<!-- ===== BERANDA ===== -->
+<section id="beranda" class="active">
+  <div class="hero">
+    <h1>Selamat Datang di <span>Toko Kue M Rasya</span></h1>
+    <p>Aneka camilan tradisional & modern dengan cita rasa autentik</p>
+
+    <img class="store-photo"
+         src="WhatsApp Image 2026-10-12 at 17.42.19.jpeg"
+         alt="Foto Toko Kue M Rasya">
+
+    <div class="history-box">
+      <h2>Sejarah Toko M Rasya</h2>
+      <p>
+        <strong>Toko Kue M Rasya</strong> didirikan pada tahun <strong>2015</strong> oleh
+        Ibu Yani di sebuah gang kecil di kawasan pasar tradisional.
+        Awalnya toko ini hanya menjual <em>telor gabus</em> dan <em>kacang bandung</em>
+        yang dibuat sendiri di dapur rumah.
+      </p>
+      <p>
+        Berkat cita rasa yang khas dan harga yang terjangkau, pelanggan semakin ramai
+        berdatangan. Pada tahun <strong>2018</strong>, toko memperluas varian produk
+        dengan menambahkan <em>keripik singkong</em>, <em>kuping gajah</em>, dan
+        <em>astor</em> dengan tiga rasa favorit: coklat, vanila, dan stroberi.
+      </p>
+      <p>
+        Kini di tahun <strong>2024</strong>, Toko Kue M Rasya telah menjadi
+        langganan tetap warga sekitar dan bahkan sering dikirim ke luar kota.
+        Motto kami: <em>"Rasa Rumahan, Harga Merakyat."</em>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRODUK ===== -->
+<section id="produk">
+  <h2 class="section-title">Daftar <span>Produk Kami</span></h2>
+  <div class="produk-grid">
+
+    <div class="card">
+      <img src="resep-telur-gabus-keju_43.jpeg">
+      <div class="card-body">
+        <h3>Telor Gabus</h3>
+        <p class="berat">Berat: 1 kg</p>
+        <p class="harga">Rp 60.000 <small>/ kg</small></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="kacang.bandung.jpg" alt="Kacang Bandung">
+      <div class="card-body">
+        <h3>Kacang Bandung</h3>
+        <p class="berat">Berat: 5 kg</p>
+        <p class="harga">Rp 110.000 <small>/ 5 kg</small></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="keripiksingkong.jpeg" alt="Keripik Singkong">
+      <div class="card-body">
+        <h3>Keripik Singkong</h3>
+        <p class="berat">Berat: 1 kg</p>
+        <p class="harga">Rp 25.000 <small>/ kg</small></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="kupinggajah.jpg" alt="Kuping Gajah">
+      <div class="card-body">
+        <h3>Kuping Gajah</h3>
+        <p class="berat">Camilan renyah manis</p>
+        <p class="harga">Rp 20.000 <small>/ bungkus</small></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="astor..jpg" alt="Astor">
+      <div class="card-body">
+        <h3>Astor</h3>
+        <p class="berat">Berat: 4 kg</p>
+        <div class="varian">
+          <span>Coklat</span>
+          <span>Vanila</span>
+          <span>Stroberi</span>
+        </div>
+        <p class="harga">Rp 85.000 <small>/ 4 kg</small></p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== SERBA 2K ===== -->
+<section id="serba2k">
+  <h2 class="section-title">Menu <span>Serba 2K</span></h2>
+  <div class="serba2k">
+
+    <div class="card-2k">
+      <img src="resep-telur-gabus-keju_43.jpeg" alt="Telor Gabus 2K">
+      <h3>Telor Gabus</h3>
+      <div class="price-tag">Rp 2.000</div>
+    </div>
+
+    <div class="card-2k">
+      <img src="kacang.bandung.jpg" alt="Kacang Bandung 2K">
+      <h3>Kacang Bandung</h3>
+      <div class="price-tag">Rp 2.000</div>
+    </div>
+
+    <div class="card-2k">
+      <img src="keripiksingkong.jpeg" alt="Keripik Singkong 2K">
+      <h3>Keripik Singkong</h3>
+      <div class="price-tag">Rp 2.000</div>
+    </div>
+
+    <div class="card-2k">
+      <img src="kupinggajah.jpg" alt="Kuping Gajah 2K">
+      <h3>Kuping Gajah</h3>
+      <div class="price-tag">Rp 2.000</div>
+    </div>
+
+    <div class="card-2k">
+      <img src="astor..jpg" alt="Astor 2K">
+      <h3>Astor (Coklat/Vanila/Stroberi)</h3>
+      <div class="price-tag">Rp 2.000</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== VIDEO PRODUKSI ===== -->
+<section id="video">
+  <h2 class="section-title">Video <span>Produksi</span></h2>
+
+  <!-- VIDEO UTAMA -->
+  <div class="video-utama">
+    <video controls poster="c:\Users\REPcomputer\Downloads\WhatsApp Image 2026-10-12 at 19.59.38.jpeg">
+      <!-- Ganti src di bawah dengan video produksi utama Anda -->
+      <source src="video pembungkusan.mp4" type="video/mp4">
+      Browser Anda tidak mendukung tag video.
+    </video>
+    <div class="video-info">
+      <h2>Proses Produksi Toko Kue M Rasya</h2>
+      <p>
+        Saksikan bagaimana camilan khas kami dibuat langsung dari dapur Toko Kue M Rasya.
+        Mulai dari pemilihan bahan baku, pengolahan, hingga pengemasan — semua dikerjakan
+        dengan teliti dan higienis untuk menjaga cita rasa rumahan yang autentik.
+      </p>
+    </div>
+  </div>
+
+  <!-- VIDEO LAINNYA -->
+  <div class="video-container">
+
+    <div class="video-card">
+      <video controls poster="resep-telur-gabus-keju_43.jpeg">
+        <!-- Ganti src dengan video pembuatan telor gabus -->
+        <source src="telorgabus.mp4" type="video/mp4">
+      </video>
+      <div class="video-info">
+        <h3>Pembuatan Telor Gabus</h3>
+        <p>Proses mengembangnya telor gabus hingga renyah sempurna.</p>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <video controls poster="keripiksingkong.jpeg">
+        <!-- Ganti src dengan video pembuatan keripik singkong -->
+        <source src="keripiksingkong.mp4" type="video/mp4">
+      </video>
+      <div class="video-info">
+        <h3>Pembuatan Keripik Singkong</h3>
+        <p>Singkong pilihan diiris tipis lalu digoreng hingga gurih.</p>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <video controls poster="astor..jpg">
+        <!-- Ganti src dengan video pembuatan astor -->
+        <source src="astorpandan.mp4" type="video/mp4">
+      </video>
+      <div class="video-info">
+        <h3>Pembuatan Astor 3 Rasa</h3>
+        <p>Astor coklat, vanila, dan stroberi dibuat dengan resep rahasia.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  &copy; 2024 <span>Toko Kue M Rasya</span> — Rasa Rumahan, Harga Merakyat
+</footer>
+
+<!-- ===== SCRIPT NAVIGASI ===== -->
+<script>
+  const navLinks = document.querySelectorAll('.nav-link');
+  const sections = document.querySelectorAll('section');
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = link.getAttribute('data-target');
+
+      sections.forEach(sec => sec.classList.remove('active'));
+      document.getElementById(target).classList.add('active');
+
+      navLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+
+      // Pause semua video saat pindah menu (biar nggak jalan terus)
+      document.querySelectorAll('video').forEach(v => v.pause());
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>
